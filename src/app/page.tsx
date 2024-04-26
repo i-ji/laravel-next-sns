@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Header from "./components/HeaderMenu/Header";
-import Posts from "./components/RecommendedPosts/Posts";
+import Posts from "./components/IndexPosts/Posts";
 import PostBtn from "./components/PostBtn";
 import { getAllPosts } from "./api";
 
@@ -10,8 +10,8 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <Posts posts={posts} />
       <PostBtn />
+      <Posts posts={posts} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, createElement } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { FaUserCircle } from "react-icons/fa";
@@ -10,6 +10,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { CiSaveDown2 } from "react-icons/ci";
 import { PostsItem } from "@/app/type";
 import { editPosts, deletePosts } from "@/app/api";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Post {
   post: PostsItem;
@@ -17,6 +18,8 @@ interface Post {
 }
 
 const Post: React.FC<Post> = ({ post, emitToggleIsFollow }) => {
+  const { toast } = useToast();
+
   const [editing, setEditing] = useState(false);
   const [editedBody, setEditedBody] = useState(post.body);
 
@@ -33,7 +36,13 @@ const Post: React.FC<Post> = ({ post, emitToggleIsFollow }) => {
 
   // 編集した投稿をセーブ
   const saveMyPost = async (post: PostsItem) => {
-    if (editedBody === "" || editedBody.length >= 250) return;
+    if (editedBody.trim() === "") {
+      toast({
+        variant: "destructive",
+        description: "本文を入力して下さい。",
+      });
+      return;
+    }
 
     await editPosts({
       userId: 0,
@@ -91,6 +100,14 @@ const Post: React.FC<Post> = ({ post, emitToggleIsFollow }) => {
     </div>
   );
 
+  // 改行を入れる
+  const nl2br = (text: string) =>
+    text
+      .split("\n")
+      .map((line, index) => [line, createElement("br", { key: index })])
+      .flat()
+      .slice(0, -1);
+
   return (
     <Card className="mb-2 shadow-md">
       <CardHeader>
@@ -120,12 +137,13 @@ const Post: React.FC<Post> = ({ post, emitToggleIsFollow }) => {
       <CardContent>
         {editing ? (
           <textarea
+            maxLength={250}
             value={editedBody}
             onChange={(e) => setEditedBody(e.target.value)}
             className="w-full border border-black px-2 py-1 rounded"
           ></textarea>
         ) : (
-          <p className="font-extralight">{post.body}</p>
+          <p className="font-extralight">{nl2br(post.body)}</p>
         )}
       </CardContent>
     </Card>

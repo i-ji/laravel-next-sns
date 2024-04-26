@@ -35,7 +35,6 @@ export const editPosts = async (post: PostsItem): Promise<PostsItem[]> => {
     }),
   });
   const updatedPost = await res.json();
-
   return updatedPost;
 };
 

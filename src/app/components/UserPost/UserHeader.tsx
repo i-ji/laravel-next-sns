@@ -22,13 +22,13 @@ const UserHeader: React.FC<UserHeader> = ({ params }) => {
     });
   };
   return (
-    <div className="fixed bg-white w-full max-w-[638px] h-[86px] px-5 sm:left-[calc(50%_-_319px)] border-b-2 border-gray-300">
+    <div className="fixed bg-white w-full max-w-[638px] h-[86px] px-5 top-0 sm:left-[calc(50%_-_319px)] border-b-2 border-gray-300">
       <header className="flex items-center justify-between pt-3 text-2xl px-1">
         <Link href={"/"} scroll={false}>
           <IoMdArrowBack />
         </Link>
         <FaTwitter className="cursor-pointer" onClick={returnTop} />
-        <GoGear className="cursor-pointer" />
+        <GoGear />
       </header>
 
       <div className="mt-2 flex items-center gap-3">

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/toaster";
+
 const notoSansJP = Noto_Sans_JP({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className="notoSansJP.className">{children}</body>
+      <body className="notoSansJP.className">
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
   );
 }

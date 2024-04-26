@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { usePathname } from "next/navigation";
 import Post from "../CommonPost/Post";
 import { PostsItem } from "@/app/type";
 import { editPosts } from "@/app/api";
@@ -10,37 +11,42 @@ interface Posts {
 }
 
 const Posts: React.FC<Posts> = ({ posts }) => {
+  // パスを取得
+  const router = usePathname();
+
   // 同じユーザーを抽出
   const extractSameUserPosts = (post: PostsItem) => {
-    const newPost = posts.filter((_post) => {
+    const newPosts = posts.filter((_post) => {
       return _post.userId === post.userId;
     });
-    newPost.forEach((_post) => {
+    newPosts.forEach((_post) => {
       _post.isFollow = !_post.isFollow;
     });
-    return newPost;
+    return newPosts;
   };
 
   // フォローボタンを押した時の処理
   const toggleIsFollow = async (post: PostsItem) => {
-    const newPost = extractSameUserPosts(post);
-    for (const _post of newPost) {
+    const newPosts = extractSameUserPosts(post);
+    for (const _post of newPosts) {
       // フォローのつけ外しする処理
       await editPosts(_post);
-
-      // 見た目だけボタンをトグルする処理
     }
-    // window.location.reload();
+    window.location.reload();
   };
 
   return (
-    <main className="mt-24 max-w-[638px] mx-auto">
+    <main className="mt-[72px] max-w-[638px] mx-auto">
       {posts.length === 0 && (
         <div className="text-2xl font-bold text-center mt-60">
-          <p>フォロー中のユーザーはいません。</p>
+          {router === "/follow" ? (
+            <p>フォロー中のユーザーはいません。</p>
+          ) : (
+            <p>まだ投稿はありません</p>
+          )}
         </div>
       )}
-      {posts.map((post) => {
+      {posts.map((post, index) => {
         return (
           <Post key={post.id} post={post} emitToggleIsFollow={toggleIsFollow} />
         );

@@ -3,7 +3,8 @@ import React from "react";
 import { getAllPosts } from "@/app/api";
 import { PostsItem } from "@/app/type";
 import UserHeader from "@/app/components/UserPost/UserHeader";
-import UserPosts from "@/app/components/UserPost/UserPosts";
+import Posts from "@/app/components/IndexPosts/Posts";
+import PostBtn from "@/app/components/PostBtn";
 
 interface Users {
   params: { userId: string };
@@ -17,7 +18,8 @@ const Users: React.FC<Users> = async (props) => {
   return (
     <div>
       <UserHeader params={props.params} />
-      <UserPosts posts={posts} />
+      <PostBtn />
+      <Posts posts={posts} />
     </div>
   );
 };
